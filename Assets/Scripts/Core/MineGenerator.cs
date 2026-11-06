@@ -41,14 +41,6 @@ public class MineGenerator
         
     }
 
-    public bool CheckWinCondition()
-    {
-        bool isWin;
-        int safeCells = board.CountSafeCells();
-        int openedCells = board.CountOpenedSafeCells();
-
-        if (safeCells == openedCells)
-            return isWin = true;
-    }
+ 
 
 }

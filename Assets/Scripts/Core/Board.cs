@@ -49,9 +49,9 @@ public class Board
     /// <param name="row"></param>
     /// <param name="column"></param>
     /// <returns></returns>
-    public List<CellData> GetNeighbors(int row, int column)
+    public List<(CellData Cell, int Row, int Column)> GetNeighbors(int row, int column)
     {
-        List<CellData> cellNeighbors = new List<CellData>();
+        List<(CellData Cell, int Row, int Column)> cellNeighbors = new List<(CellData Cell, int Row, int Column)>();
 
         for (int rowOffset = -1; rowOffset < 2; rowOffset++)
         {
@@ -66,7 +66,7 @@ public class Board
                 CellData neighbor = GetCell(neighborRow, neighborColumn);
 
                 if (neighbor != null)
-                    cellNeighbors.Add(neighbor);
+                    cellNeighbors.Add((neighbor, neighborRow, neighborColumn));
 
 
             }
@@ -104,13 +104,14 @@ public class Board
     public int CountMinesAround(int row, int column)
     {
 
-        List<CellData> neighbors = GetNeighbors(row, column);
+
+        List<(CellData Cell, int Row, int Column)> neighbors = GetNeighbors(row, column);
 
         int count = 0;
 
         foreach (var cell in neighbors)
         {
-            if (cell.IsMine)
+            if (cell.Cell.IsMine)
                 count++;
         }
 
@@ -161,7 +162,30 @@ public class Board
 
     }
     //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\\
+    /// <summary>
+    /// подсчитываем количество открытых клеток
+    /// </summary>
+    public int CountOpenedSafeCells()
+    {
+        int countSafeCells = 0;
+        CellData cell;
 
+        for (int i = 0; i < Height; i++)
+        {
+            for (int j = 0; j < Width; j++)
+            {
+                cell = cells[i, j];
+
+                if (!cell.IsMine && cell.IsOpen)
+                {
+                    countSafeCells++;
+                }
+            }
+        }
+
+        return countSafeCells;
+
+    }
 
 
 
